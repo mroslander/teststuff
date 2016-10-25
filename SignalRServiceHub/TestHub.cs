@@ -10,21 +10,20 @@ namespace SignalRServiceHub
 {
     [HubName("TestHub")]
     public class TestHub : Hub
-    {
-        public void DetermineLength(string message)
+    {       
+        public void SendWorkflowInstanceRecord(string trackRecordData)
         {
-            Console.WriteLine(message);
-
-            string newMessage = string.Format(@"{0} has a length of: {1}", message, message.Length);
-            Clients.All.ReceiveLength(newMessage);
+            Clients.All.WorkflowInstanceRecordReceived(trackRecordData);
         }
 
-        public void TrackRecordReceived(string trackRecordData)
+        public void SendActivityStateRecord(string trackRecordData)
         {
-            //Newtonsoft.Json.JsonConvert.DeserializeObject<ActivityStateRecord
-            Console.WriteLine("TrackRecordReceived {0}", trackRecordData);
+            Clients.All.ActivityStateRecordReceived(trackRecordData);
+        }
 
-            Clients.All.TrackRecordReceived(trackRecordData);
+        public void SendCustomTrackingRecord(string trackRecordData)
+        {
+            Clients.All.CustomTrackingRecordReceived(trackRecordData);
         }
     }
 }

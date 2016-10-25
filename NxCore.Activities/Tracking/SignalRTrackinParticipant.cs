@@ -86,6 +86,7 @@ namespace NxCore.Activities.Tracking
             WorkflowInstanceRecord workflowInstanceRecord = record as WorkflowInstanceRecord;
             if (workflowInstanceRecord != null)
             {
+                _hub.Invoke("SendWorkflowInstanceRecord", Newtonsoft.Json.JsonConvert.SerializeObject(record)).Wait();
                 //sw.WriteLine("------WorkflowInstanceRecord------");
                 //sw.WriteLine("Workflow InstanceID: {0} Workflow instance state: {1}",
                 //record.InstanceId, workflowInstanceRecord.State);
@@ -95,10 +96,7 @@ namespace NxCore.Activities.Tracking
             ActivityStateRecord activityStateRecord = record as ActivityStateRecord;
             if (activityStateRecord != null)
             {
-                string message = Newtonsoft.Json.JsonConvert.SerializeObject(record);
-                //_hub.JsonSerializer.Serialize() ?
-
-                _hub.Invoke("TrackRecordReceived", message).Wait();
+                _hub.Invoke("SendActivityStateRecord", Newtonsoft.Json.JsonConvert.SerializeObject(record)).Wait();
 
                 //IDictionary < string,object /> variables = activityStateRecord.Variables;
                 //StringBuilder vars = new StringBuilder();
@@ -120,17 +118,18 @@ namespace NxCore.Activities.Tracking
                 //sw.WriteLine("\n");
             }
 
-            //CustomTrackingRecord customTrackingRecord = record as CustomTrackingRecord;
-            //if ((customTrackingRecord != null) && (customTrackingRecord.Data.Count > 0))
-            //{
-            //    sw.WriteLine("------CustomTrackingRecord------");
-            //    sw.WriteLine("\n\tUser Data:");
-            //    foreach (string data in customTrackingRecord.Data.Keys)
-            //    {
-            //        sw.WriteLine(" \t\t {0} : {1}", data, customTrackingRecord.Data[data]);
-            //    }
-            //    sw.WriteLine("\n");
-            //}
+            CustomTrackingRecord customTrackingRecord = record as CustomTrackingRecord;
+            if ((customTrackingRecord != null)) // && (customTrackingRecord.Data.Count > 0))
+            {
+                _hub.Invoke("SendCustomTrackingRecord", Newtonsoft.Json.JsonConvert.SerializeObject(record)).Wait();
+                //sw.WriteLine("------CustomTrackingRecord------");
+                //sw.WriteLine("\n\tUser Data:");
+                //foreach (string data in customTrackingRecord.Data.Keys)
+                //{
+                //    sw.WriteLine(" \t\t {0} : {1}", data, customTrackingRecord.Data[data]);
+                //}
+                //sw.WriteLine("\n");
+            }
         }
 
         public SignalRTrackinParticipant(string baseAddress) //, TimeSpan timeout = TimeSpan.Zero)

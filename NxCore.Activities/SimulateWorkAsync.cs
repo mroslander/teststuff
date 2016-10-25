@@ -51,11 +51,11 @@ namespace NxCore.Activities
         {
             // This activity simulates taking a few moments. This code runs
             // asynchronously with respect to the workflow thread.
-            Console.WriteLine("Start working on " + WorkDescription);
+            //Console.WriteLine("Start working on " + WorkDescription);
 
             System.Threading.Thread.Sleep(max);
 
-            Console.WriteLine("Done working on " + WorkDescription);
+            //Console.WriteLine("Done working on " + WorkDescription);
 
             return r.Next(1, max + 1);
         }

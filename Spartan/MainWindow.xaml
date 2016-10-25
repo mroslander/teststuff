@@ -8,5 +8,6 @@
         Title="MainWindow" Height="350" Width="525" Loaded="Window_Loaded" Background="#66000000">
     <Grid Opacity="0.5">
         <TextBox x:Name="textBoxTracRecords" Margin="3,0,0,0" TextWrapping="Wrap" Text="TextBoxsass" Background="{x:Null}" Foreground="Yellow"/>
+        <Button x:Name="button" Click="button_Click" Content="Button" Margin="0,10,10,0" Height="20" VerticalAlignment="Top" HorizontalAlignment="Right" Width="75"/>
     </Grid>
 </Window>

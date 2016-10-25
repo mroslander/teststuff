@@ -60,15 +60,15 @@ namespace Spartan
 
             #region Setup persisting
 
-            InstanceStore store = new SqlWorkflowInstanceStore(@"Data Source=.\SQLEXPRESS;Initial Catalog=" +
-                @"WorkflowInstanceStore;Integrated Security=True");
+            //InstanceStore store = new SqlWorkflowInstanceStore(@"Data Source=.\SQLEXPRESS;Initial Catalog=" +
+            //    @"WorkflowInstanceStore;Integrated Security=True");
 
-            InstanceHandle handle = store.CreateInstanceHandle();
-            InstanceView view = store.Execute(handle,
-              new CreateWorkflowOwnerCommand(), TimeSpan.FromSeconds(30));
-            handle.Free();
-            store.DefaultInstanceOwner = view.InstanceOwner;
-            app.InstanceStore = store;
+            //InstanceHandle handle = store.CreateInstanceHandle();
+            //InstanceView view = store.Execute(handle,
+            //  new CreateWorkflowOwnerCommand(), TimeSpan.FromSeconds(30));
+            //handle.Free();
+            //store.DefaultInstanceOwner = view.InstanceOwner;
+            //app.InstanceStore = store;
 
             #endregion
 
@@ -113,6 +113,7 @@ namespace Spartan
                                     { all }
                                 }
                             }
+                            
                         }
             };
 
@@ -138,7 +139,7 @@ namespace Spartan
                     {
                         ActivityStateRecord activityStateRecord = record as ActivityStateRecord;
                         msg = "== activityStateRecord  : " + activityStateRecord.ToString();
-                        
+
                         a = activityStateRecord.Activity;
                         //messages.Add(Newtonsoft.Json.JsonConvert.SerializeObject(a));
                     }
@@ -146,12 +147,12 @@ namespace Spartan
                     {
                         CustomTrackingRecord customTrackRecord = record as CustomTrackingRecord;
                         msg = "== customTrackRecord : " + customTrackRecord.ToString();
-                        
+
                         a = customTrackRecord.Activity;
                         //messages.Add(Newtonsoft.Json.JsonConvert.SerializeObject(a));
                         foreach (KeyValuePair<string, object> kv in customTrackRecord.Data)
                         {
-                            Console.WriteLine((string.Format("  {0} = {1}, serialized: {2}", kv.Key, kv.Value, Newtonsoft.Json.JsonConvert.SerializeObject(kv.Value))));
+                            //Console.WriteLine((string.Format("  {0} = {1}, serialized: {2}", kv.Key, kv.Value, Newtonsoft.Json.JsonConvert.SerializeObject(kv.Value))));
                         }
                     }
                     else if (record is WorkflowInstanceRecord)
@@ -163,7 +164,7 @@ namespace Spartan
 
 
                     }
-                    Console.WriteLine(msg);
+                    //Console.WriteLine(msg);
                     AppendText(msg + "\n");
 
 
@@ -220,6 +221,8 @@ namespace Spartan
             app.Extensions.Add(signalRTracker);
             app.Extensions.Add(simTracker);
 
+
+
             ThreadPool.QueueUserWorkItem(new WaitCallback((context) =>
             {
                 AutoResetEvent sync = new AutoResetEvent(false);
@@ -237,7 +240,7 @@ namespace Spartan
                 };
 
                 app.OnUnhandledException = delegate (WorkflowApplicationUnhandledExceptionEventArgs e)
-                {                    
+                {
                     Console.WriteLine(e.UnhandledException.ToString());
                     return UnhandledExceptionAction.Terminate;
                 };
@@ -246,7 +249,7 @@ namespace Spartan
 
                 sync.WaitOne();
             }));
-            
+
             //ThreadPool.QueueUserWorkItem(new WaitCallback((context) =>
             //{
             ////Invoking the Workflow Instance with Input Arguments
@@ -256,10 +259,15 @@ namespace Spartan
             //    this.Dispatcher.Invoke(DispatcherPriority.Render
             //        , (Action)(() =>
             //        {
-                        
+
             //        }));
 
-            //}));
+        //}));
+        }
+
+        private void button_Click(object sender, RoutedEventArgs e)
+        {
+            RunWorkflow();
         }
     } // MainWindow
 
