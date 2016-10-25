@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SignalRHub
+namespace SignalRServiceHub
 {
     [HubName("TestHub")]
     public class TestHub : Hub
@@ -24,7 +24,8 @@ namespace SignalRHub
             //Newtonsoft.Json.JsonConvert.DeserializeObject<ActivityStateRecord
             Console.WriteLine("TrackRecordReceived {0}", trackRecordData);
 
-            //Clients.All.
+            Clients.All.TrackRecordReceived(trackRecordData);
         }
     }
 }
+

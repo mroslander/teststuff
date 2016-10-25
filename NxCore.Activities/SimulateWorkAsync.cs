@@ -8,9 +8,11 @@ using Newtonsoft.Json;
 
 namespace NxCore.Activities
 {
-    public sealed class SimulateWorkAsync : AsyncCodeActivity<int>
+    public class SimulateWorkAsync : AsyncCodeActivity<int>
     {
         public InArgument<int> Max { get; set; }
+
+        public string WorkDescription { get; set; }
 
         static Random r = new Random();
 
@@ -22,7 +24,7 @@ namespace NxCore.Activities
             Func<int, int> DoWorkDelegate = new Func<int, int>(DoWork);
             context.UserState = DoWorkDelegate;
 
-            Console.WriteLine("Start instance " + context.ActivityInstanceId);
+            //Console.WriteLine("Start instance " + context.ActivityInstanceId);
 
             return DoWorkDelegate.BeginInvoke(Max.Get(context), callback, state);
         }
@@ -33,17 +35,27 @@ namespace NxCore.Activities
             Func<int, int> GetRandomDelegate = (Func<int, int>)context.UserState;
 
             int randomNumber = (int)GetRandomDelegate.EndInvoke(result);
-            Console.WriteLine("End instance " + context.ActivityInstanceId);
+
+            //Console.WriteLine("End instance " + context.ActivityInstanceId);
+            TrackWorkResults(context);
 
             return randomNumber;
         }
 
-        int DoWork(int max)
+        protected virtual void TrackWorkResults(AsyncCodeActivityContext context)
         {
-            // This activity simulates taking a few moments
-            // to generate the random number. This code runs
+            
+        }
+
+        protected virtual int DoWork(int max)
+        {
+            // This activity simulates taking a few moments. This code runs
             // asynchronously with respect to the workflow thread.
-            System.Threading.Thread.Sleep(max); // r.Next(3000));
+            Console.WriteLine("Start working on " + WorkDescription);
+
+            System.Threading.Thread.Sleep(max);
+
+            Console.WriteLine("Done working on " + WorkDescription);
 
             return r.Next(1, max + 1);
         }

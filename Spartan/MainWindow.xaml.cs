@@ -2,9 +2,11 @@
 using NxCore.Data;
 using System;
 using System.Activities;
+using System.Activities.DurableInstancing;
 using System.Activities.Tracking;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.DurableInstancing;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -45,14 +47,33 @@ namespace Spartan
 
         public void RunWorkflow()
         {
+            // Data for workflow
             data = ProfileCuttingData.CreateTestData();
-            
+
+            // Workflow activity
             AutonestProfileCuttingData wf = new AutonestProfileCuttingData();
             IDictionary<string, object> inputs = new Dictionary<string, object>();
             inputs[nameof(wf.Data)] = data;
 
+            // Workflow app to run activity
+            WorkflowApplication app = new WorkflowApplication(wf, inputs);
+
+            #region Setup persisting
+
+            InstanceStore store = new SqlWorkflowInstanceStore(@"Data Source=.\SQLEXPRESS;Initial Catalog=" +
+                @"WorkflowInstanceStore;Integrated Security=True");
+
+            InstanceHandle handle = store.CreateInstanceHandle();
+            InstanceView view = store.Execute(handle,
+              new CreateWorkflowOwnerCommand(), TimeSpan.FromSeconds(30));
+            handle.Free();
+            store.DefaultInstanceOwner = view.InstanceOwner;
+            app.InstanceStore = store;
+
+            #endregion
+
             //WorkflowApplication wfapp = new WorkflowApplication(wf, inputs);
-            WorkflowInvoker instance = new WorkflowInvoker(wf);            
+
 
             ////Mapping between the Object and Line No.
             //Dictionary<object, SourceLocation> wfElementToSourceLocationMap = UpdateSourceLocationMappingInDebuggerService();
@@ -62,12 +83,11 @@ namespace Spartan
 
             #region Set up Custom Tracking
             const String all = "*";
-            TextTrackingParticipant simTracker = new TextTrackingParticipant()
+
+            TrackingProfile TrackingProfile = new TrackingProfile()
             {
-                TrackingProfile = new TrackingProfile()
-                {
-                    Name = "CustomTrackingProfile",
-                    Queries =
+                Name = "CustomTrackingProfile",
+                Queries =
                         {
                             new CustomTrackingQuery()
                             {
@@ -94,7 +114,11 @@ namespace Spartan
                                 }
                             }
                         }
-                }
+            };
+
+            TextTrackingParticipant simTracker = new TextTrackingParticipant()
+            {
+                TrackingProfile = TrackingProfile
             };
 
             #endregion
@@ -183,22 +207,59 @@ namespace Spartan
 
                 //}
             };
+            #region SignalR tracking
 
-            instance.Extensions.Add(simTracker);
+            NxCore.Activities.Tracking.SignalRTrackinParticipant signalRTracker = new NxCore.Activities.Tracking.SignalRTrackinParticipant(@"http://localhost:8080/")
+            {
+                TrackingProfile = TrackingProfile
+            };
+
+            #endregion
+
+
+            app.Extensions.Add(signalRTracker);
+            app.Extensions.Add(simTracker);
 
             ThreadPool.QueueUserWorkItem(new WaitCallback((context) =>
             {
-            //Invoking the Workflow Instance with Input Arguments
-            instance.Invoke(inputs); // new Dictionary<string, object> { { "decisionVar", true } }, new TimeSpan(1, 0, 0));
+                AutoResetEvent sync = new AutoResetEvent(false);
 
-                //This is to remove the final debug adornment
-                this.Dispatcher.Invoke(DispatcherPriority.Render
-                    , (Action)(() =>
-                    {
-                        
-                    }));
+                app.Completed += (e) =>
+                {
+                    Console.WriteLine("Completed " + e);
+                    sync.Set();
+                };
 
+                app.Aborted = delegate (WorkflowApplicationAbortedEventArgs e)
+                {
+                    Console.WriteLine(e.Reason);
+                    sync.Set();
+                };
+
+                app.OnUnhandledException = delegate (WorkflowApplicationUnhandledExceptionEventArgs e)
+                {                    
+                    Console.WriteLine(e.UnhandledException.ToString());
+                    return UnhandledExceptionAction.Terminate;
+                };
+
+                app.Run();
+
+                sync.WaitOne();
             }));
+            
+            //ThreadPool.QueueUserWorkItem(new WaitCallback((context) =>
+            //{
+            ////Invoking the Workflow Instance with Input Arguments
+            //instance.Invoke(inputs); // new Dictionary<string, object> { { "decisionVar", true } }, new TimeSpan(1, 0, 0));
+
+            //    //This is to remove the final debug adornment
+            //    this.Dispatcher.Invoke(DispatcherPriority.Render
+            //        , (Action)(() =>
+            //        {
+                        
+            //        }));
+
+            //}));
         }
     } // MainWindow
 

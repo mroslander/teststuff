@@ -55,7 +55,7 @@
     <p1:SendReply Request="{x:Reference __ReferenceID1}" DisplayName="SendReplyToReceive" sap2010:WorkflowViewState.IdRef="SendReply_1" PersistBeforeSend="True" />
     <Delay Duration="00:01:00" sap2010:WorkflowViewState.IdRef="Delay_1" />
     <WriteLine sap2010:WorkflowViewState.IdRef="WriteLine_1" Text="Workflow Ended" />
-    <sads:DebugSymbol.Symbol>d0FDOlxkZXZcTnhXb3JrZmxvdzJcV29ya2Zsb3dDb25zb2xlUHJvdG9QZXJzaXN0ZW5jZVxXb3JrZmxvdzEueGFtbAknAzsOAgEBKwU1EgIBCjYFNmYCAQk3BTekAQIBBjgFOEwCAQQ5BTlWAgECMA8wbwIBCzgVOB8CAQU5QzlTAgED</sads:DebugSymbol.Symbol>
+    <sads:DebugSymbol.Symbol>dzxDOlxkZXZcZ2l0aHViXFdvcmtmbG93Q29uc29sZVByb3RvUGVyc2lzdGVuY2VcV29ya2Zsb3cxLnhhbWwJJwM7DgIBASsFNRICAQo2BTZmAgEJNwU3pAECAQY4BThMAgEEOQU5VgIBAjAPMG8CAQs4FTgfAgEFOUM5UwIBAw==</sads:DebugSymbol.Symbol>
   </Sequence>
   <sap2010:WorkflowViewState.ViewStateManager>
     <sap2010:ViewStateManager>

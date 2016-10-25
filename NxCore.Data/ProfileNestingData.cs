@@ -88,14 +88,19 @@ namespace NxCore.Data
             data.UserName = System.Environment.UserName;
             data.BatchDatas = new List<BatchData>();
 
+            int batchesPerData = 1;
+            int jobsPerBatch = 3;
+            int materialsPerJob = 1;
+            int partsPerJob = 5;
+
             //using (var ctx = new ProfileCuttingContext())
             //{
-            for (int batchNo = 0; batchNo < 2; batchNo++)
+            for (int batchNo = 0; batchNo < batchesPerData; batchNo++)
             {
                 BatchData batch = new BatchData() { Title = "Batch" + batchNo };
                 batch.JobDatas = new List<JobData>();
 
-                for (int jobNo = 0; jobNo < 3; jobNo++)
+                for (int jobNo = 0; jobNo < jobsPerBatch; jobNo++)
                 {
                     JobData job = new JobData() { Title = "Job" + jobNo };
                     //job.BatchData = batch;
@@ -105,7 +110,7 @@ namespace NxCore.Data
 
                     batch.JobDatas.Add(job);
 
-                    for (int materialNo = 0; materialNo < 1; materialNo++)
+                    for (int materialNo = 0; materialNo < materialsPerJob; materialNo++)
                     {
                         ProfileMaterialData materialData = new ProfileMaterialData()
                         {
@@ -116,7 +121,7 @@ namespace NxCore.Data
                         //materialData.JobData = job;                            
                         job.ProfileMaterialDatas.Add(materialData);
                     }
-                    for (int profilePartNo = 0; profilePartNo < 10; profilePartNo++)
+                    for (int profilePartNo = 0; profilePartNo < partsPerJob; profilePartNo++)
                     {
                         ProfilePartData profilePartData = new ProfilePartData()
                         {

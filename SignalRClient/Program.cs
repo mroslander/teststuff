@@ -12,7 +12,7 @@ namespace SignalRClient
         static void Main(string[] args)
         {
             IHubProxy _hub;
-            string url = @"http://localhost:8080/";
+            string url = @"http://localhost:8080/"; 
             var connection = new HubConnection(url);
             _hub = connection.CreateHubProxy("TestHub");
             connection.Start().Wait();
