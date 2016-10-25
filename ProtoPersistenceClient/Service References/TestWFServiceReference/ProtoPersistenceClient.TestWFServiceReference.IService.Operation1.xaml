@@ -1,0 +1,65 @@
+<Activity mc:Ignorable="sap2010 sads" x:Class="ProtoPersistenceClient.TestWFServiceReference.Activities.Operation1" this:Operation1.EndpointConfigurationName="NetNamedPipeBinding_IService"
+ xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities"
+ xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+ xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities"
+ xmlns:p="http://tempuri.org/"
+ xmlns:p1="http://schemas.microsoft.com/netfx/2009/xaml/servicemodel"
+ xmlns:pt="clr-namespace:ProtoPersistenceClient.TestWFServiceReference;assembly=ProtoPersistenceClient, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null"
+ xmlns:pt1="clr-namespace:ProtoPersistenceClient.TestWFServiceReference;assembly=ProtoPersistenceClient"
+ xmlns:sads="http://schemas.microsoft.com/netfx/2010/xaml/activities/debugger"
+ xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation"
+ xmlns:sc="clr-namespace:System.ComponentModel;assembly=System"
+ xmlns:this="clr-namespace:ProtoPersistenceClient.TestWFServiceReference.Activities"
+ xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <x:Members>
+    <x:Property Name="EndpointConfigurationName" Type="x:String">
+      <x:Property.Attributes>
+        <sc:DefaultValueAttribute>
+          <x:Arguments>
+            <x:String>NetNamedPipeBinding_IService</x:String>
+          </x:Arguments>
+        </sc:DefaultValueAttribute>
+      </x:Property.Attributes>
+    </x:Property>
+  </x:Members>
+  <mva:VisualBasic.Settings>Assembly references and imported namespaces serialized as XML namespaces</mva:VisualBasic.Settings>
+  <Sequence>
+    <Sequence.Variables>
+      <x:Reference>__ReferenceID1</x:Reference>
+      <x:Reference>__ReferenceID2</x:Reference>
+    </Sequence.Variables>
+    <p1:Send x:Name="__ReferenceID0" Action="http://tempuri.org/IService/Operation1" OperationName="Operation1" ServiceContractName="p:IService">
+      <p1:Send.CorrelationInitializers>
+        <p1:RequestReplyCorrelationInitializer>
+          <p1:RequestReplyCorrelationInitializer.CorrelationHandle>
+            <InArgument x:TypeArguments="p1:CorrelationHandle">
+              <VariableValue x:TypeArguments="p1:CorrelationHandle">
+                <VariableValue.Variable>
+                  <Variable x:TypeArguments="p1:CorrelationHandle" x:Name="__ReferenceID2" />
+                </VariableValue.Variable>
+              </VariableValue>
+            </InArgument>
+          </p1:RequestReplyCorrelationInitializer.CorrelationHandle>
+        </p1:RequestReplyCorrelationInitializer>
+      </p1:Send.CorrelationInitializers>
+      <p1:SendMessageContent>
+        <InArgument x:TypeArguments="pt1:Operation1Request">[New ProtoPersistenceClient.TestWFServiceReference.Operation1Request()]</InArgument>
+      </p1:SendMessageContent>
+      <p1:Send.EndpointConfigurationName>
+        <PropertyReference x:TypeArguments="x:String" PropertyName="EndpointConfigurationName" />
+      </p1:Send.EndpointConfigurationName>
+    </p1:Send>
+    <p1:ReceiveReply Request="{x:Reference __ReferenceID0}" Action="http://tempuri.org/IService/Operation1Response">
+      <p1:ReceiveMessageContent>
+        <OutArgument x:TypeArguments="pt1:Operation1Response">
+          <VariableReference x:TypeArguments="pt1:Operation1Response">
+            <VariableReference.Variable>
+              <Variable x:TypeArguments="pt1:Operation1Response" x:Name="__ReferenceID1" Name="tempResult_f59e12c6d17646478a36cf187ac1ef95" />
+            </VariableReference.Variable>
+          </VariableReference>
+        </OutArgument>
+      </p1:ReceiveMessageContent>
+    </p1:ReceiveReply>
+    <sads:DebugSymbol.Symbol>d5oBQzpcZGV2XE54V29ya2Zsb3cyXFByb3RvUGVyc2lzdGVuY2VDbGllbnRcU2VydmljZSBSZWZlcmVuY2VzXFRlc3RXRlNlcnZpY2VSZWZlcmVuY2VcUHJvdG9QZXJzaXN0ZW5jZUNsaWVudC5UZXN0V0ZTZXJ2aWNlUmVmZXJlbmNlLklTZXJ2aWNlLk9wZXJhdGlvbjEueGFtbAYaA0AOAgEBHwUzDwIBBTQFPhcCAQIuPS6EAQIBByQPKB8CAQY3CzsfAgEE</sads:DebugSymbol.Symbol>
+  </Sequence>
+</Activity>

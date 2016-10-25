@@ -1,0 +1,77 @@
+﻿<Activity mc:Ignorable="sap sap2010 sads" x:Class="NxCore.Activities.AutonestProfileCuttingData"
+ xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities"
+ xmlns:local="clr-namespace:NxCore.Activities"
+ xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+ xmlns:mca="clr-namespace:Microsoft.CSharp.Activities;assembly=System.Activities"
+ xmlns:nd="clr-namespace:NxCore.Data;assembly=NxCore.Data"
+ xmlns:sads="http://schemas.microsoft.com/netfx/2010/xaml/activities/debugger"
+ xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation"
+ xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation"
+ xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib"
+ xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=mscorlib"
+ xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <x:Members>
+    <x:Property Name="Data" Type="InArgument(nd:ProfileCuttingData)" />
+  </x:Members>
+  <sap2010:ExpressionActivityEditor.ExpressionActivityEditor>C#</sap2010:ExpressionActivityEditor.ExpressionActivityEditor>
+  <sap2010:WorkflowViewState.IdRef>NxCore.Activities.AutonestProfileCuttingData_1</sap2010:WorkflowViewState.IdRef>
+  <TextExpression.NamespacesForImplementation>
+    <sco:Collection x:TypeArguments="x:String">
+      <x:String>System</x:String>
+      <x:String>System.Collections.Generic</x:String>
+      <x:String>System.Data</x:String>
+      <x:String>System.Linq</x:String>
+      <x:String>System.Text</x:String>
+      <x:String>NxCore.Data</x:String>
+    </sco:Collection>
+  </TextExpression.NamespacesForImplementation>
+  <TextExpression.ReferencesForImplementation>
+    <sco:Collection x:TypeArguments="AssemblyReference">
+      <AssemblyReference>EntityFramework</AssemblyReference>
+      <AssemblyReference>EntityFramework.SqlServer</AssemblyReference>
+      <AssemblyReference>Microsoft.CSharp</AssemblyReference>
+      <AssemblyReference>Newtonsoft.Json</AssemblyReference>
+      <AssemblyReference>System</AssemblyReference>
+      <AssemblyReference>System.Activities</AssemblyReference>
+      <AssemblyReference>System.ComponentModel.DataAnnotations</AssemblyReference>
+      <AssemblyReference>System.Core</AssemblyReference>
+      <AssemblyReference>System.Data</AssemblyReference>
+      <AssemblyReference>System.Runtime.Serialization</AssemblyReference>
+      <AssemblyReference>System.ServiceModel</AssemblyReference>
+      <AssemblyReference>System.ServiceModel.Activities</AssemblyReference>
+      <AssemblyReference>System.Xaml</AssemblyReference>
+      <AssemblyReference>System.Xml</AssemblyReference>
+      <AssemblyReference>System.Xml.Linq</AssemblyReference>
+      <AssemblyReference>NxCore.Data</AssemblyReference>
+      <AssemblyReference>mscorlib</AssemblyReference>
+      <AssemblyReference>NxCore.Activities</AssemblyReference>
+    </sco:Collection>
+  </TextExpression.ReferencesForImplementation>
+  <ForEach x:TypeArguments="nd:BatchData" DisplayName="ForEach&lt;BatchData&gt;" sap2010:WorkflowViewState.IdRef="ForEach`1_1">
+    <ForEach.Values>
+      <InArgument x:TypeArguments="scg:IEnumerable(nd:BatchData)">
+        <mca:CSharpValue x:TypeArguments="scg:IEnumerable(nd:BatchData)">Data.BatchDatas</mca:CSharpValue>
+      </InArgument>
+    </ForEach.Values>
+    <ActivityAction x:TypeArguments="nd:BatchData">
+      <ActivityAction.Argument>
+        <DelegateInArgument x:TypeArguments="nd:BatchData" Name="item" />
+      </ActivityAction.Argument>
+      <local:AutonestProfileBatch sap2010:WorkflowViewState.IdRef="AutonestProfileBatch_1">
+        <local:AutonestProfileBatch.Data>
+          <InArgument x:TypeArguments="nd:BatchData">
+            <mca:CSharpValue x:TypeArguments="nd:BatchData">item</mca:CSharpValue>
+          </InArgument>
+        </local:AutonestProfileBatch.Data>
+      </local:AutonestProfileBatch>
+    </ActivityAction>
+    <sads:DebugSymbol.Symbol>d0RDOlxkZXZcTnhXb3JrZmxvdzJcTnhDb3JlLkFjdGl2aXRpZXNcQXV0b25lc3RQcm9maWxlQ3V0dGluZ0RhdGEueGFtbAQyA0UNAgEBNQk1awIBBjwHQiQCAQI/DT9TAgED</sads:DebugSymbol.Symbol>
+  </ForEach>
+  <sap2010:WorkflowViewState.ViewStateManager>
+    <sap2010:ViewStateManager>
+      <sap2010:ViewStateData Id="AutonestProfileBatch_1" sap:VirtualizedContainerService.HintSize="200,22" />
+      <sap2010:ViewStateData Id="ForEach`1_1" sap:VirtualizedContainerService.HintSize="287,210" />
+      <sap2010:ViewStateData Id="NxCore.Activities.AutonestProfileCuttingData_1" sap:VirtualizedContainerService.HintSize="327,290" />
+    </sap2010:ViewStateManager>
+  </sap2010:WorkflowViewState.ViewStateManager>
+</Activity>
