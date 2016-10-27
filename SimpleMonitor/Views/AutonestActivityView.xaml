@@ -4,10 +4,20 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:SimpleMonitor.Views"
+             xmlns:ViewModel="clr-namespace:SimpleMonitor.ViewModel"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300" Width="100" Height="100">
+    <!--<UserControl.DataContext>
+        <ViewModel:AutonestActivityPresenter x:Name="vm"/>
+    </UserControl.DataContext>-->
     <Grid>
         <Ellipse Fill="Blue" Margin="0" Stroke="Black"/>
-
+        <!--<TextBlock x:Name="textBlock" Height="26" Margin="6,10,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Width="88"/>-->
+        <!--<TextBox Text="{Binding SomeText, UpdateSourceTrigger=PropertyChanged}" Margin="5"/>-->
+        <!--<Label Foreground="Yellow" Margin="5,5,5,0">Title</Label>
+        <Label Foreground="Yellow" Margin="5,20,5,0">State</Label>-->
+        <TextBlock Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" Foreground="Yellow" Margin="5,5,5,0"/>
+        <TextBlock Text="{Binding State, UpdateSourceTrigger=PropertyChanged}" Foreground="Yellow" Margin="5,20,5,0"/>
+        <ListBox ItemsSource="{Binding TrackingRecords}" Margin="5,40,5,5"/>
     </Grid>
 </UserControl>

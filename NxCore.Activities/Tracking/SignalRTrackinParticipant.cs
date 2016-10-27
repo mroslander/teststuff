@@ -78,11 +78,15 @@ namespace NxCore.Activities.Tracking
     {
         private IHubProxy _hub;
 
-        public string BaseAddress { get; private set; }
+        
 
         // Tracking record received
         protected override void Track(TrackingRecord record, TimeSpan timeout)
         {
+            if (_hub == null)
+            {
+            }
+
             WorkflowInstanceRecord workflowInstanceRecord = record as WorkflowInstanceRecord;
             if (workflowInstanceRecord != null)
             {
@@ -132,14 +136,9 @@ namespace NxCore.Activities.Tracking
             }
         }
 
-        public SignalRTrackinParticipant(string baseAddress) //, TimeSpan timeout = TimeSpan.Zero)
+        public SignalRTrackinParticipant(IHubProxy hub)
         {
-            BaseAddress = baseAddress;
-
-            // TODO separately?
-            var connection = new HubConnection(baseAddress);            
-            _hub = connection.CreateHubProxy("TestHub");
-            connection.Start().Wait();
+            _hub = hub;
         }
 
         //IHubProxy _hub;

@@ -1,4 +1,5 @@
-﻿using NxCore.Activities;
+﻿using Microsoft.AspNet.SignalR.Client;
+using NxCore.Activities;
 using NxCore.Data;
 using System;
 using System.Activities;
@@ -6,6 +7,7 @@ using System.Activities.DurableInstancing;
 using System.Activities.Tracking;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.DurableInstancing;
 using System.Text;
 using System.Threading;
@@ -30,6 +32,8 @@ namespace Spartan
     {
         ProfileCuttingData data;
 
+        private IHubProxy _hub;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -37,6 +41,15 @@ namespace Spartan
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            // Connect to service hub
+            IHubProxy hub = null;
+            var connection = new HubConnection("http://localhost:8080/");
+            hub = connection.CreateHubProxy("TestHub");
+            connection.Start().Wait();
+            _hub = hub;
+            // Set events
+            _hub.On<string>(nameof(DecisionReceived), DecisionReceived);
+
             RunWorkflow();
         }
 
@@ -45,15 +58,20 @@ namespace Spartan
             textBoxTracRecords.AppendText(message);
         }
 
+        //public string ServiceHubBaseAddress { get; set; }
+
         public void RunWorkflow()
         {
             // Data for workflow
             data = ProfileCuttingData.CreateTestData();
 
             // Workflow activity
-            AutonestProfileCuttingData wf = new AutonestProfileCuttingData();
+            //AutonestProfileCuttingData wf = new AutonestProfileCuttingData();
+            var wf = new NxCore.Activities.SampleWorkflows.FromImportToNestings();
             IDictionary<string, object> inputs = new Dictionary<string, object>();
-            inputs[nameof(wf.Data)] = data;
+            inputs[nameof(wf.ImportTask)] = ImportTask.CreateTestTask();
+            //inputs[nameof(wf.Data)] = data;
+
 
             // Workflow app to run activity
             WorkflowApplication app = new WorkflowApplication(wf, inputs);
@@ -152,7 +170,8 @@ namespace Spartan
                         //messages.Add(Newtonsoft.Json.JsonConvert.SerializeObject(a));
                         foreach (KeyValuePair<string, object> kv in customTrackRecord.Data)
                         {
-                            //Console.WriteLine((string.Format("  {0} = {1}, serialized: {2}", kv.Key, kv.Value, Newtonsoft.Json.JsonConvert.SerializeObject(kv.Value))));
+                            msg += string.Format("\n    {0} = {1}   (serialized value: {2})", kv.Key, kv.Value,
+                                Newtonsoft.Json.JsonConvert.SerializeObject(kv.Value));
                         }
                     }
                     else if (record is WorkflowInstanceRecord)
@@ -210,18 +229,28 @@ namespace Spartan
             };
             #region SignalR tracking
 
-            NxCore.Activities.Tracking.SignalRTrackinParticipant signalRTracker = new NxCore.Activities.Tracking.SignalRTrackinParticipant(@"http://localhost:8080/")
+            NxCore.Activities.Tracking.SignalRTrackinParticipant signalRTracker = new NxCore.Activities.Tracking.SignalRTrackinParticipant(_hub)
             {
                 TrackingProfile = TrackingProfile
             };
 
             #endregion
 
+            //string test = Newtonsoft.Json.JsonConvert.SerializeObject(wf);
 
-            app.Extensions.Add(signalRTracker);
+            //// Workflow Description
+            ////WorkflowDesigner
+            //PropertyInfo[] ps = wf.GetType().GetProperties();
+
+
+            if (_hub != null)
+            {
+                app.Extensions.Add(signalRTracker);
+            }
+
             app.Extensions.Add(simTracker);
 
-
+            
 
             ThreadPool.QueueUserWorkItem(new WaitCallback((context) =>
             {
@@ -269,6 +298,24 @@ namespace Spartan
         {
             RunWorkflow();
         }
+
+        private void buttonRequestDecision_Click(object sender, RoutedEventArgs e)
+        {
+            string data = "paatosdataa1";
+
+            // Send decision request to hub
+            AppendText("Send decision request to hub " + data);
+            _hub.Invoke("RequestDecision", data);
+        }
+
+        public void DecisionReceived(string data)
+        {
+            this.Dispatcher.Invoke(DispatcherPriority.Render, (Action)(() =>
+            {
+                AppendText("Decision Received " + data);
+            }));
+        }
+
     } // MainWindow
 
     

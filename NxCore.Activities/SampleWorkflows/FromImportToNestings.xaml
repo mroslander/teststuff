@@ -1,0 +1,154 @@
+﻿<Activity mc:Ignorable="sap sap2010 sads" x:Class="NxCore.Activities.SampleWorkflows.FromImportToNestings"
+ xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities"
+ xmlns:local="clr-namespace:NxCore.Activities"
+ xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+ xmlns:mca="clr-namespace:Microsoft.CSharp.Activities;assembly=System.Activities"
+ xmlns:sads="http://schemas.microsoft.com/netfx/2010/xaml/activities/debugger"
+ xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation"
+ xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation"
+ xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib"
+ xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=mscorlib"
+ xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <x:Members>
+    <x:Property Name="ImportTask" Type="InArgument(local:ImportTask)" />
+  </x:Members>
+  <sap2010:ExpressionActivityEditor.ExpressionActivityEditor>C#</sap2010:ExpressionActivityEditor.ExpressionActivityEditor>
+  <sap2010:WorkflowViewState.IdRef>NxCore.Activities.SampleWorkflows.FromImportToNestings_1</sap2010:WorkflowViewState.IdRef>
+  <TextExpression.NamespacesForImplementation>
+    <sco:Collection x:TypeArguments="x:String">
+      <x:String>System</x:String>
+      <x:String>System.Collections.Generic</x:String>
+      <x:String>System.Data</x:String>
+      <x:String>System.Linq</x:String>
+      <x:String>System.Text</x:String>
+      <x:String>NxCore.Activities</x:String>
+    </sco:Collection>
+  </TextExpression.NamespacesForImplementation>
+  <TextExpression.ReferencesForImplementation>
+    <sco:Collection x:TypeArguments="AssemblyReference">
+      <AssemblyReference>EntityFramework</AssemblyReference>
+      <AssemblyReference>EntityFramework.SqlServer</AssemblyReference>
+      <AssemblyReference>Microsoft.AspNet.SignalR.Client</AssemblyReference>
+      <AssemblyReference>Microsoft.CSharp</AssemblyReference>
+      <AssemblyReference>Newtonsoft.Json</AssemblyReference>
+      <AssemblyReference>PresentationCore</AssemblyReference>
+      <AssemblyReference>PresentationFramework</AssemblyReference>
+      <AssemblyReference>System</AssemblyReference>
+      <AssemblyReference>System.Activities</AssemblyReference>
+      <AssemblyReference>System.Activities.Presentation</AssemblyReference>
+      <AssemblyReference>System.ComponentModel.DataAnnotations</AssemblyReference>
+      <AssemblyReference>System.Core</AssemblyReference>
+      <AssemblyReference>System.Data</AssemblyReference>
+      <AssemblyReference>System.Runtime.Serialization</AssemblyReference>
+      <AssemblyReference>System.ServiceModel</AssemblyReference>
+      <AssemblyReference>System.ServiceModel.Activities</AssemblyReference>
+      <AssemblyReference>System.Xaml</AssemblyReference>
+      <AssemblyReference>System.Xml</AssemblyReference>
+      <AssemblyReference>System.Xml.Linq</AssemblyReference>
+      <AssemblyReference>WindowsBase</AssemblyReference>
+      <AssemblyReference>NxCore.Data</AssemblyReference>
+      <AssemblyReference>mscorlib</AssemblyReference>
+      <AssemblyReference>NxCore.Activities</AssemblyReference>
+    </sco:Collection>
+  </TextExpression.ReferencesForImplementation>
+  <Sequence DisplayName="Root" sap2010:WorkflowViewState.IdRef="Sequence_2">
+    <Sequence DisplayName="Import" sap2010:WorkflowViewState.IdRef="Sequence_1">
+      <Sequence.Variables>
+        <Variable x:TypeArguments="scg:List(local:ImportTask)" Name="ImportTasks" />
+      </Sequence.Variables>
+      <local:SplitToChunks FilesPerChunk="40" sap2010:WorkflowViewState.IdRef="SplitToChunks_1">
+        <local:SplitToChunks.ImportTask>
+          <InArgument x:TypeArguments="local:ImportTask">
+            <mca:CSharpValue x:TypeArguments="local:ImportTask">ImportTask</mca:CSharpValue>
+          </InArgument>
+        </local:SplitToChunks.ImportTask>
+        <local:SplitToChunks.Result>
+          <OutArgument x:TypeArguments="scg:List(local:ImportTask)">
+            <mca:CSharpReference x:TypeArguments="scg:List(local:ImportTask)">ImportTasks</mca:CSharpReference>
+          </OutArgument>
+        </local:SplitToChunks.Result>
+      </local:SplitToChunks>
+      <local:CommentOut>
+        <ForEach x:TypeArguments="local:ImportTask" DisplayName="ForEach&lt;ImportTask&gt;" sap2010:WorkflowViewState.IdRef="ForEach`1_1">
+          <ForEach.Values>
+            <InArgument x:TypeArguments="scg:IEnumerable(local:ImportTask)">
+              <mca:CSharpValue x:TypeArguments="scg:IEnumerable(local:ImportTask)">ImportTasks</mca:CSharpValue>
+            </InArgument>
+          </ForEach.Values>
+          <ActivityAction x:TypeArguments="local:ImportTask">
+            <ActivityAction.Argument>
+              <DelegateInArgument x:TypeArguments="local:ImportTask" Name="importTask" />
+            </ActivityAction.Argument>
+            <local:ImportProfileParts WorkDescription="{x:Null}" sap2010:WorkflowViewState.IdRef="ImportProfileParts_1" Max="3000">
+              <local:ImportProfileParts.ImportTask>
+                <InArgument x:TypeArguments="local:ImportTask">
+                  <mca:CSharpValue x:TypeArguments="local:ImportTask">importTask</mca:CSharpValue>
+                </InArgument>
+              </local:ImportProfileParts.ImportTask>
+            </local:ImportProfileParts>
+          </ActivityAction>
+        </ForEach>
+        <sap2010:WorkflowViewState.IdRef>CommentOut_1</sap2010:WorkflowViewState.IdRef>
+      </local:CommentOut>
+      <ParallelForEach x:TypeArguments="local:ImportTask" DisplayName="ParallelForEach&lt;ImportTask&gt;" sap2010:WorkflowViewState.IdRef="ParallelForEach`1_1">
+        <ParallelForEach.Values>
+          <InArgument x:TypeArguments="scg:IEnumerable(local:ImportTask)">
+            <mca:CSharpValue x:TypeArguments="scg:IEnumerable(local:ImportTask)">ImportTasks</mca:CSharpValue>
+          </InArgument>
+        </ParallelForEach.Values>
+        <ActivityAction x:TypeArguments="local:ImportTask">
+          <ActivityAction.Argument>
+            <DelegateInArgument x:TypeArguments="local:ImportTask" Name="importTask" />
+          </ActivityAction.Argument>
+          <local:ImportProfileParts WorkDescription="{x:Null}" sap2010:WorkflowViewState.IdRef="ImportProfileParts_2" Max="3000">
+            <local:ImportProfileParts.ImportTask>
+              <InArgument x:TypeArguments="local:ImportTask">
+                <mca:CSharpValue x:TypeArguments="local:ImportTask">importTask</mca:CSharpValue>
+              </InArgument>
+            </local:ImportProfileParts.ImportTask>
+          </local:ImportProfileParts>
+        </ActivityAction>
+      </ParallelForEach>
+    </Sequence>
+    <sads:DebugSymbol.Symbol>d0lDOlxkZXZcZ2l0aHViXE54Q29yZS5BY3Rpdml0aWVzXFNhbXBsZVdvcmtmbG93c1xGcm9tSW1wb3J0VG9OZXN0aW5ncy54YW1sDDYDcg4CAQE3BXAQAgECOwdGHQIBDkcHXBoCAQ1dB28ZAgEDPg0+XQIBEzsqOy4CARJDDUNwAgEPYA1gbwIBCmcLbSYCAQRqEWphAgEGZ3tngQECAQU=</sads:DebugSymbol.Symbol>
+  </Sequence>
+  <sap2010:WorkflowViewState.ViewStateManager>
+    <sap2010:ViewStateManager>
+      <sap2010:ViewStateData Id="SplitToChunks_1" sap:VirtualizedContainerService.HintSize="287,22" />
+      <sap2010:ViewStateData Id="ImportProfileParts_1" sap:VirtualizedContainerService.HintSize="200,22" />
+      <sap2010:ViewStateData Id="ForEach`1_1" sap:VirtualizedContainerService.HintSize="287,210">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="CommentOut_1" sap:VirtualizedContainerService.HintSize="287,51">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="ImportProfileParts_2" sap:VirtualizedContainerService.HintSize="200,22" />
+      <sap2010:ViewStateData Id="ParallelForEach`1_1" sap:VirtualizedContainerService.HintSize="287,210" />
+      <sap2010:ViewStateData Id="Sequence_1" sap:VirtualizedContainerService.HintSize="309,487">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Sequence_2" sap:VirtualizedContainerService.HintSize="331,611">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="NxCore.Activities.SampleWorkflows.FromImportToNestings_1" sap:VirtualizedContainerService.HintSize="371,691" />
+    </sap2010:ViewStateManager>
+  </sap2010:WorkflowViewState.ViewStateManager>
+</Activity>

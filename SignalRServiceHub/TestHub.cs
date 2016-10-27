@@ -25,6 +25,17 @@ namespace SignalRServiceHub
         {
             Clients.All.CustomTrackingRecordReceived(trackRecordData);
         }
+
+        public void RequestDecision(string data)
+        {
+            // Propagate request to all clints
+            Clients.All.DecisionRequestReceived(data);
+        }
+
+        public void SendDecision(string data)
+        {
+            Clients.All.DecisionReceived(data);
+        }
     }
 }
 

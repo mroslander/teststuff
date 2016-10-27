@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Activities;
 using System.Activities.Tracking;
+using System.ComponentModel;
 
 namespace NxCore.Activities
 {
-
+    [DesignerCategory("Profile Cutting")]
     public sealed class AutonestProfileJobWithNestlib : SimulateWorkAsync
     {
         //public int TimePerNestingResult { get; set; }

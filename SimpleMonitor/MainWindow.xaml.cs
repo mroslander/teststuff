@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace SimpleMonitor
 {
@@ -52,7 +53,8 @@ namespace SimpleMonitor
             AllRecords.Add(trackingRecord);
         }
 
-        Dictionary<string, object> ActivityViewsById = new Dictionary<string, object>();
+        Dictionary<string, ViewModel.AutonestActivityPresenter> ActivityViewsById = 
+            new Dictionary<string, ViewModel.AutonestActivityPresenter>();
 
         public List<TrackingRecord> AllRecords
         {
@@ -71,38 +73,28 @@ namespace SimpleMonitor
             }
         }
 
-        object GetActivityView(ActivityInfo activity)
+        ViewModel.AutonestActivityPresenter GetActivityView(CustomTrackingRecord record)
         {
-            if (activity.TypeName.ToLower().Contains("nestlib"))
+            if (record.Activity.TypeName.ToLower().Contains("nestlib"))
             {
 
             }
-
-            object activityView = null;
-            if (ActivityViewsById.TryGetValue(activity.InstanceId, out activityView) == false)
+            else
             {
-                activityView = new object();
-                ActivityViewsById[activity.InstanceId] = activityView;
+
+            }
+            ViewModel.AutonestActivityPresenter activityView = null;
+            if (ActivityViewsById.TryGetValue(record.Activity.InstanceId, out activityView) == false)
+            {
+                activityView = CreateView(record);
+                ActivityViewsById[record.Activity.InstanceId] = activityView;
             }
 
             return activityView;
         }
 
         private void AddActivityStateRecord(ActivityStateRecord activityStateRecord)
-        {
-            object activityView = GetActivityView(activityStateRecord.Activity);
-
-            if (activityView != null)
-            {
-
-            }
-            else
-            {
-                Console.WriteLine("No view for activity {0}. Type is {1}, Id {2}", activityStateRecord.Activity.Name, activityStateRecord.Activity.TypeName, activityStateRecord.Activity.Id);
-            }
-            AddTrackingRecord(activityStateRecord);
-            Console.WriteLine(activityStateRecord.Activity.TypeName);
-
+        {           
             types.Add(activityStateRecord.Activity.TypeName);
         }
         List<string> types = new List<string>();
@@ -112,9 +104,42 @@ namespace SimpleMonitor
             AddCustomTrackingRecord(customTrackingRecord);
         }
 
+        public ViewModel.AutonestActivityPresenter CreateView(CustomTrackingRecord trackingRecord)
+        {
+            ViewModel.AutonestActivityPresenter view = new ViewModel.AutonestActivityPresenter();
+
+            Views.AutonestActivityView v = new Views.AutonestActivityView();
+            v.DataContext = view;
+
+            canvas.Children.Add(v);
+
+            x += 80;
+
+            Canvas.SetLeft(v, x);
+
+            return view;
+        }
+        int x = 0;
         private void AddCustomTrackingRecord(CustomTrackingRecord customTrackingRecord)
         {
-            AddTrackingRecord(customTrackingRecord);
+            this.Dispatcher.Invoke(DispatcherPriority.Render, (Action)(() =>
+            {
+                ViewModel.AutonestActivityPresenter activityView = GetActivityView(customTrackingRecord);
+
+                if (activityView != null)
+                {
+
+                }
+                else
+                {
+                    Console.WriteLine("No view for activity {0}. Type is {1}, Id {2}",
+                        customTrackingRecord.Activity.Name, customTrackingRecord.Activity.TypeName, customTrackingRecord.Activity.Id);
+                }
+                activityView.AddTrackingRecord(customTrackingRecord);
+                AddTrackingRecord(customTrackingRecord);
+                Console.WriteLine(customTrackingRecord.Activity.TypeName);
+            }));
+            
         }
 
         public void WorkflowInstanceRecordReceived(string data)

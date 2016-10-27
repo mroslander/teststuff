@@ -9,6 +9,7 @@
  xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation"
  xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib"
  xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=mscorlib"
+ xmlns:sd="clr-namespace:System.Diagnostics;assembly=System"
  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <x:Members>
     <x:Property Name="Data" Type="InArgument(nd:JobData)" />
@@ -30,6 +31,7 @@
     <sco:Collection x:TypeArguments="AssemblyReference">
       <AssemblyReference>EntityFramework</AssemblyReference>
       <AssemblyReference>EntityFramework.SqlServer</AssemblyReference>
+      <AssemblyReference>Microsoft.AspNet.SignalR.Client</AssemblyReference>
       <AssemblyReference>Microsoft.CSharp</AssemblyReference>
       <AssemblyReference>Newtonsoft.Json</AssemblyReference>
       <AssemblyReference>System</AssemblyReference>
@@ -44,7 +46,12 @@
       <AssemblyReference>System.Xml</AssemblyReference>
       <AssemblyReference>System.Xml.Linq</AssemblyReference>
       <AssemblyReference>NxCore.Data</AssemblyReference>
-      <AssemblyReference>Microsoft.AspNet.SignalR.Client</AssemblyReference>
+      <AssemblyReference>PresentationFramework</AssemblyReference>
+      <AssemblyReference>PresentationCore</AssemblyReference>
+      <AssemblyReference>System.Activities.Presentation</AssemblyReference>
+      <AssemblyReference>WindowsBase</AssemblyReference>
+      <AssemblyReference>WFExtended</AssemblyReference>
+      <AssemblyReference>WFExtended.Twitter</AssemblyReference>
       <AssemblyReference>mscorlib</AssemblyReference>
       <AssemblyReference>NxCore.Activities</AssemblyReference>
     </sco:Collection>
@@ -63,37 +70,66 @@
         <InArgument x:TypeArguments="x:Int32">1</InArgument>
       </Assign.Value>
     </Assign>
-    <While sap2010:WorkflowViewState.IdRef="While_1">
-      <While.Condition>
-        <mca:CSharpValue x:TypeArguments="x:Boolean">ResultNo &lt;= Data.ProfilePartDatas.Count</mca:CSharpValue>
-      </While.Condition>
-      <Sequence sap2010:WorkflowViewState.IdRef="Sequence_2">
-        <local:AutonestProfileJobWithNestlib sap2010:Annotation.AnnotationText="Test Annotation" sap2010:WorkflowViewState.IdRef="AutonestProfileJobWithNestlib_2" Max="100" WorkDescription="Nestlib">
+    <local:Track Data="{x:Null}" DisplayName="Send Track Data" sap2010:WorkflowViewState.IdRef="Track_1" Name="Start">
+      <local:Track.TraceLevel>
+        <InArgument x:TypeArguments="sd:TraceLevel">
+          <mca:CSharpValue x:TypeArguments="sd:TraceLevel">System.Diagnostics.TraceLevel.Info</mca:CSharpValue>
+        </InArgument>
+      </local:Track.TraceLevel>
+    </local:Track>
+    <local:CommentOut sap2010:WorkflowViewState.IdRef="CommentOut_1">
+      <While sap2010:WorkflowViewState.IdRef="While_1">
+        <While.Condition>
+          <mca:CSharpValue x:TypeArguments="x:Boolean">ResultNo &lt;= Data.ProfilePartDatas.Count</mca:CSharpValue>
+        </While.Condition>
+        <Sequence sap2010:WorkflowViewState.IdRef="Sequence_2">
+          <local:AutonestProfileJobWithNestlib sap2010:Annotation.AnnotationText="Test Annotation" sap2010:WorkflowViewState.IdRef="AutonestProfileJobWithNestlib_2" Max="1000" WorkDescription="Nestlib">
+            <local:AutonestProfileJobWithNestlib.ResultNo>
+              <InArgument x:TypeArguments="x:Int32">
+                <mca:CSharpValue x:TypeArguments="x:Int32">ResultNo</mca:CSharpValue>
+              </InArgument>
+            </local:AutonestProfileJobWithNestlib.ResultNo>
+          </local:AutonestProfileJobWithNestlib>
+          <Assign sap2010:WorkflowViewState.IdRef="Assign_2">
+            <Assign.To>
+              <OutArgument x:TypeArguments="x:Int32">
+                <mca:CSharpReference x:TypeArguments="x:Int32">ResultNo</mca:CSharpReference>
+              </OutArgument>
+            </Assign.To>
+            <Assign.Value>
+              <InArgument x:TypeArguments="x:Int32">
+                <mca:CSharpValue x:TypeArguments="x:Int32">ResultNo + 1</mca:CSharpValue>
+              </InArgument>
+            </Assign.Value>
+          </Assign>
+        </Sequence>
+      </While>
+    </local:CommentOut>
+    <ParallelForEach x:TypeArguments="nd:ProfilePartData" DisplayName="ParallelForEach&lt;ProfilePartData&gt;" sap2010:WorkflowViewState.IdRef="ParallelForEach`1_1">
+      <ParallelForEach.Values>
+        <InArgument x:TypeArguments="scg:IEnumerable(nd:ProfilePartData)">
+          <mca:CSharpValue x:TypeArguments="scg:IEnumerable(nd:ProfilePartData)">Data.ProfilePartDatas</mca:CSharpValue>
+        </InArgument>
+      </ParallelForEach.Values>
+      <ActivityAction x:TypeArguments="nd:ProfilePartData">
+        <ActivityAction.Argument>
+          <DelegateInArgument x:TypeArguments="nd:ProfilePartData" Name="item" />
+        </ActivityAction.Argument>
+        <local:AutonestProfileJobWithNestlib sap2010:Annotation.AnnotationText="Test Annotation" sap2010:WorkflowViewState.IdRef="AutonestProfileJobWithNestlib_3" Max="1000" WorkDescription="Nestlib">
           <local:AutonestProfileJobWithNestlib.ResultNo>
             <InArgument x:TypeArguments="x:Int32">
               <mca:CSharpValue x:TypeArguments="x:Int32">ResultNo</mca:CSharpValue>
             </InArgument>
           </local:AutonestProfileJobWithNestlib.ResultNo>
         </local:AutonestProfileJobWithNestlib>
-        <Assign sap2010:WorkflowViewState.IdRef="Assign_2">
-          <Assign.To>
-            <OutArgument x:TypeArguments="x:Int32">
-              <mca:CSharpReference x:TypeArguments="x:Int32">ResultNo</mca:CSharpReference>
-            </OutArgument>
-          </Assign.To>
-          <Assign.Value>
-            <InArgument x:TypeArguments="x:Int32">
-              <mca:CSharpValue x:TypeArguments="x:Int32">ResultNo + 1</mca:CSharpValue>
-            </InArgument>
-          </Assign.Value>
-        </Assign>
-      </Sequence>
-    </While>
-    <sads:DebugSymbol.Symbol>dzdDOlxkZXZcZ2l0aHViXE54Q29yZS5BY3Rpdml0aWVzXEF1dG9uZXN0UHJvZmlsZUpvYi54YW1sDTQDXQ4CAQE4BUEOAgETQgVbDQIBAj8vPzACARc7CztYAgEURgdaEgIBBkQJRHICAQNHCU0vAgEOTglZEgIBB0oPSlQCARBHqAFHrQECAQ9WD1ZYAgELUQ9RXAIBCA==</sads:DebugSymbol.Symbol>
+      </ActivityAction>
+    </ParallelForEach>
+    <sads:DebugSymbol.Symbol>d0dDOlxkZXZcZ2l0aHViXE54Q29yZS5BY3Rpdml0aWVzXFNhbXBsZVdvcmtmbG93c1xBdXRvbmVzdFByb2ZpbGVKb2IueGFtbA07A4ABDgIBAT8FSA4CARJJBU8TAgENUAVrGAIBDGwFfhcCAQJGL0YwAgEWQgtCWAIBE0wLTHACAQ9Jb0l2AgEObwtveQIBCXYJfC8CAQN5D3lUAgEFdqgBdq4BAgEE</sads:DebugSymbol.Symbol>
   </Sequence>
   <sap2010:WorkflowViewState.ViewStateManager>
     <sap2010:ViewStateManager>
-      <sap2010:ViewStateData Id="Assign_1" sap:VirtualizedContainerService.HintSize="464,62" />
+      <sap2010:ViewStateData Id="Assign_1" sap:VirtualizedContainerService.HintSize="287,62" />
+      <sap2010:ViewStateData Id="Track_1" sap:VirtualizedContainerService.HintSize="287,22" />
       <sap2010:ViewStateData Id="AutonestProfileJobWithNestlib_2" sap:VirtualizedContainerService.HintSize="242,45">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
@@ -110,14 +146,30 @@
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
       <sap2010:ViewStateData Id="While_1" sap:VirtualizedContainerService.HintSize="464,431" />
-      <sap2010:ViewStateData Id="Sequence_1" sap:VirtualizedContainerService.HintSize="486,657">
+      <sap2010:ViewStateData Id="CommentOut_1" sap:VirtualizedContainerService.HintSize="287,51">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="AutonestProfileJobWithNestlib_3" sap:VirtualizedContainerService.HintSize="200,45">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="ParallelForEach`1_1" sap:VirtualizedContainerService.HintSize="287,210" />
+      <sap2010:ViewStateData Id="Sequence_1" sap:VirtualizedContainerService.HintSize="309,589">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="NxCore.Activities.AutonestProfileJob_1" sap:VirtualizedContainerService.HintSize="526,737" />
+      <sap2010:ViewStateData Id="NxCore.Activities.AutonestProfileJob_1" sap:VirtualizedContainerService.HintSize="349,669" />
     </sap2010:ViewStateManager>
   </sap2010:WorkflowViewState.ViewStateManager>
 </Activity>

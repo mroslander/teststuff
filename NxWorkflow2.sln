@@ -25,6 +25,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SignalRServiceHub", "Signal
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleMonitor", "SimpleMonitor\SimpleMonitor.csproj", "{D5B9BF49-E8CF-4AE2-B3D2-E1E47BE02643}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ResultSelector", "ResultSelector\ResultSelector.csproj", "{EB30DAF0-7978-4884-88ED-AFC923818D57}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dia", "Dia\Dia.csproj", "{8A57348F-6BCC-4183-ACBC-4A009F14FBF7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -117,6 +121,22 @@ Global
 		{D5B9BF49-E8CF-4AE2-B3D2-E1E47BE02643}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D5B9BF49-E8CF-4AE2-B3D2-E1E47BE02643}.Release|x86.ActiveCfg = Release|Any CPU
 		{D5B9BF49-E8CF-4AE2-B3D2-E1E47BE02643}.Release|x86.Build.0 = Release|Any CPU
+		{EB30DAF0-7978-4884-88ED-AFC923818D57}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EB30DAF0-7978-4884-88ED-AFC923818D57}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EB30DAF0-7978-4884-88ED-AFC923818D57}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{EB30DAF0-7978-4884-88ED-AFC923818D57}.Debug|x86.Build.0 = Debug|Any CPU
+		{EB30DAF0-7978-4884-88ED-AFC923818D57}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EB30DAF0-7978-4884-88ED-AFC923818D57}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EB30DAF0-7978-4884-88ED-AFC923818D57}.Release|x86.ActiveCfg = Release|Any CPU
+		{EB30DAF0-7978-4884-88ED-AFC923818D57}.Release|x86.Build.0 = Release|Any CPU
+		{8A57348F-6BCC-4183-ACBC-4A009F14FBF7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8A57348F-6BCC-4183-ACBC-4A009F14FBF7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8A57348F-6BCC-4183-ACBC-4A009F14FBF7}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{8A57348F-6BCC-4183-ACBC-4A009F14FBF7}.Debug|x86.Build.0 = Debug|Any CPU
+		{8A57348F-6BCC-4183-ACBC-4A009F14FBF7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8A57348F-6BCC-4183-ACBC-4A009F14FBF7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8A57348F-6BCC-4183-ACBC-4A009F14FBF7}.Release|x86.ActiveCfg = Release|Any CPU
+		{8A57348F-6BCC-4183-ACBC-4A009F14FBF7}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

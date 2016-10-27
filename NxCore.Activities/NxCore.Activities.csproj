@@ -49,8 +49,11 @@
       <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Activities" />
+    <Reference Include="System.Activities.Presentation" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
@@ -60,16 +63,34 @@
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AutonestProfileJobWithNestlib.cs" />
+    <Compile Include="AutonestProfileJobWithNestlib.cs">
+      <SubType>Profile Cutting</SubType>
+    </Compile>
+    <Compile Include="CommentOut.cs" />
+    <Compile Include="Design\CommentOutDesigner.xaml.cs">
+      <DependentUpon>CommentOutDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Design\ImportProfilePartsDesigner.xaml.cs">
+      <DependentUpon>ImportProfilePartsDesigner.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ImportProfilePart.cs" />
+    <Compile Include="ImportProfileParts.cs">
+      <SubType>Profile Cutting</SubType>
+    </Compile>
+    <Compile Include="ImportTask.cs" />
+    <Compile Include="NxTask.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SimulateWorkAsync.cs" />
+    <Compile Include="SplitToChunks.cs" />
+    <Compile Include="Track.cs" />
+    <Compile Include="Tracking\EFTrackingParticipant.cs" />
     <Compile Include="Tracking\SignalRTrackinParticipant.cs" />
   </ItemGroup>
   <ItemGroup>
-    <XamlAppDef Include="AutonestProfileBatch.xaml">
+    <XamlAppDef Include="SampleWorkflows\AutonestProfileBatch.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </XamlAppDef>
@@ -85,13 +106,13 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <XamlAppDef Include="AutonestProfileJob.xaml">
+    <XamlAppDef Include="SampleWorkflows\AutonestProfileJob.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </XamlAppDef>
   </ItemGroup>
   <ItemGroup>
-    <XamlAppDef Include="CreateProfileJobs.xaml">
+    <XamlAppDef Include="SampleWorkflows\CreateProfileJobs.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </XamlAppDef>
@@ -100,13 +121,22 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
-    <XamlAppDef Include="AutonestProfileCuttingData.xaml">
+    <XamlAppDef Include="SampleWorkflows\AutonestProfileCuttingData.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </XamlAppDef>
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-    <XamlAppDef Include="SampleWorkflows\BasicProcessingScenario.xaml">
+    <Page Include="Design\CommentOutDesigner.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Design\ImportProfilePartsDesigner.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <XamlAppDef Include="SampleWorkflows\FromImportToNestings.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </XamlAppDef>
