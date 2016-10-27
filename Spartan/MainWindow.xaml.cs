@@ -43,7 +43,7 @@ namespace Spartan
         {
             // Connect to service hub
             IHubProxy hub = null;
-            var connection = new HubConnection("http://localhost:8080/");
+            var connection = new HubConnection("http://matti.nestix.fi:8080/");
             hub = connection.CreateHubProxy("TestHub");
             connection.Start().Wait();
             _hub = hub;

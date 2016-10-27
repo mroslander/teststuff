@@ -22,7 +22,7 @@ namespace SimpleMonitor
     /// </summary>
     public partial class MainWindow : Window, ITrackingEventMonitor
     {
-        private string baseAddress = @"http://localhost:8080/";
+        private string baseAddress = @"http://matti.nestix.fi:8080/";
         private IHubProxy Hub;
 
         public MainWindow()
